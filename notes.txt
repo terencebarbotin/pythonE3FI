@@ -1,0 +1,24 @@
+to do : 
+trier les données du csv des communes françaises 
+
+séparer en deux cases latitude et longitude
+
+parcourir chaque commune, en extraire la latitude et longitude, et en trouver la météo via api météo
+
+
+Première difficulté : trouver un dataset correct
+Trouver un dataset permettant de lister tous les pays du monde avec leurs coordonnées
+donc on a cherché avec toutes les communes françaises à la place 
+galéré à chercher, mais finalment trouvé sur https://www.data.gouv.fr/fr/datasets/base-officielle-des-codes-postaux/
+
+Pour météo : première utilisation de https://api.meteo-concept.com/ mais attention, essai gratuit de 14 jours et 500 requests par jour max
+
+Finalement, on récupère un dataset worldcities idéal 
+Donc utilisation de WWO, meilleure api car donne météo peu importe localisation GPS 
+
+Galère de faire des liens entre les fichiers car considéré comme doc et pas py 
+galère d'accéder aux avg_temp_month car à l'intérieur de clé unique, schéma d'accès complexe 
+
+git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
