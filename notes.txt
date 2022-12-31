@@ -22,3 +22,6 @@ galère d'accéder aux avg_temp_month car à l'intérieur de clé unique, schém
 git config --global user.email "you@example.com"
   git config --global user.name "Your Name"
 
+récupération d'un package sur https://github.com/plotly/dash-recipes
+
+1h12
