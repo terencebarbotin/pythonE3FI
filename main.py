@@ -7,10 +7,10 @@ import plotly.graph_objects as go
 import plotly.express as px
 import plotly.graph_objects as go
 
-import data
 import avg_min_temp_world
 import carte_monde
 import piechart
+import data
 
 import pandas as pd 
 import geopandas as gpd
