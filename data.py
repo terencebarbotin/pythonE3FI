@@ -20,24 +20,27 @@ tokensWorld = {
 # Exemple d'appel de l'API World Weather Online
 #response_api_meteo_world = requests.get("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=dbda99e0d09d4f9999d170804222812&q=48.834,2.394&format=json")
 
+# Parcours du dataset des villes pour récupérer toutes les longitudes et latitudes et effectuer derrière les requêtes via API World Weather Online
+# On ouvre notre dataset (sous format .csv) en mode lecture 
+with open('worldcities.csv', 'r') as Dataset_Villes:
 
-def calcul_avg_min_temp_year():
-    tab_avg_min_temp_year = []
-
-    # Parcours du dataset des villes pour récupérer toutes les longitudes et latitudes et effectuer derrière les requêtes via API World Weather Online
-    # On ouvre notre dataset (sous format .csv) en mode lecture 
-    with open('worldcities.csv', 'r') as Dataset_Villes:
+    # On ouvre également un csv vide pour écrire dedans toutes les valeurs récupérées de l'API afin de ne pas prendre 3h à l'éxécution du dashboard
+    with open('avg_min_temp_world.csv', 'w', newline = "") as testeur:
+  
+        # On définit un reader du dataset
         reader_Dataset_Villes = csv.reader(Dataset_Villes)
+
+        # On définit un writer du csv vide
+        writer_testeur = csv.writer(testeur)
 
         # On créé un compteur pour tester uniquement les n premières valeurs du dataset (sinon trop d'appels pour une API gratuite)
         cpt_appels = 0
         # On définit un nombre limites d'appels 
-        N = 100
+        N = 41000
 
         # On parcourt chaque ligne du dataset
         for row_Dataset_Villes in reader_Dataset_Villes:
-            try:
-
+            try :
                 # On extrait du dataset le nom et les coordonnées GPS (latitude, longitude) de la ville 
                 city_name = row_Dataset_Villes[1].split(',')
                 city_latitude = row_Dataset_Villes[2].split(',')
@@ -93,9 +96,9 @@ def calcul_avg_min_temp_year():
 
                     # On définit une variable qui représente la température moyenne de la ville de manière annuelle 
                     avg_min_temp_year = somme_avg_min_temp_month / 12
-
-                    tab_avg_min_temp_year.append(avg_min_temp_year)
-                    print(avg_min_temp_year)
+                    print("" + str(cpt_appels) + " : " + str(avg_min_temp_year)
+                    )
+                    writer_testeur.writerow([avg_min_temp_year])
 
                 else:
                     # S'il y a eu une erreur, on affiche le code de l'erreur pour avoir une idée d'où elles provient (erreur d'acccès, de requête, etc)
@@ -107,11 +110,13 @@ def calcul_avg_min_temp_year():
 
                 if cpt_appels >= N:
                     break
-
-            except IndexError:
+            
+            except IndexError: 
+                # S'il y a une IndexError, c'est que l'API ne peut pas récupérer de coordonnées à ces doordonnées. On met donc dans le fichier une valeur reconnaissable (150) afin de remplir une ligne quand même.
+                # Il est important de remplir une ligne quand même afin de conserver le même nombre de lignes que le fichier original afin de pouvoir avoir une concordance sur chaque ligne entre la ville et sa température
+                writer_testeur.writerow([150])
                 print("Erreur : l'index {} est en dehors des limites de la liste".format(cpt_appels))
-
-            return tab_avg_min_temp_year
+                continue
 
         
 
